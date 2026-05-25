@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ynu.edu.mapper.CarbonEmissionConsumeMapper">
+    <!-- 批量插入 -->
+    <insert id="batchInsert" parameterType="list">
+        INSERT INTO carbon_emission_consume (
+        cd_id, coefficient_type, consume_amount,
+        carbon_emission, create_time
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.cdId}, #{item.coefficientType}, #{item.consumeAmount},
+            #{item.carbonEmission}, #{item.createTime}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据carbon_data ID查询 -->
+    <select id="selectByCdId" resultType="ynu.edu.entity.CarbonEmissionConsume">
+        SELECT * FROM carbon_emission_consume
+        WHERE cd_id = #{cdId}
+    </select>
+
+    <!-- 根据区域和时间查询 -->
+    <select id="selectByAreaAndTime" resultType="ynu.edu.entity.CarbonEmissionConsume">
+        SELECT cec.* FROM carbon_emission_consume cec
+        JOIN carbon_data cd ON cec.cd_id = cd.id
+        WHERE cd.collect_time BETWEEN #{startTime} AND #{endTime}
+        <if test="areaId != null">
+            AND cd.area_id = #{areaId}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ynu.edu.mapper.WarningMapper">
+    <!-- 分页查询预警记录 -->
+    <select id="selectWarningPage" resultType="ynu.edu.entity.CarbonWarning">
+        SELECT cw.*, ca.area_name
+        FROM carbon_warning cw
+        JOIN campus_area ca ON cw.area_id = ca.id
+        <where>
+            <if test="areaId != null">AND cw.area_id = #{areaId}</if>
+            <if test="warningType != null and warningType != ''">AND cw.warning_type = #{warningType}</if>
+            <if test="handleStatus != null">AND cw.handle_status = #{handleStatus}</if>
+            <if test="startTime != null">AND cw.warning_time >= #{startTime}</if>
+            <if test="endTime != null">AND #{endTime} >= cw.warning_time</if>
+        </where>
+        ORDER BY cw.warning_time DESC
+        LIMIT #{page.pageSize} OFFSET #{page.offset}
+    </select>
+
+    <!-- 统计符合条件的总记录数 -->
+    <select id="countWarning" resultType="int">
+        SELECT COUNT(*) FROM carbon_warning
+        <where>
+            <if test="areaId != null">AND area_id = #{areaId}</if>
+            <if test="warningType != null and warningType != ''">AND warning_type = #{warningType}</if>
+            <if test="handleStatus != null">AND handle_status = #{handleStatus}</if>
+            <if test="startTime != null">AND warning_time >= #{startTime}</if>
+            <if test="endTime != null">AND #{endTime} >= warning_time</if>
+        </where>
+    </select>
+
+    <update id="updateById" parameterType="ynu.edu.entity.CarbonWarning">
+        UPDATE carbon_warning
+        <set>
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="warningTime != null">warning_time = #{warningTime},</if>
+            <if test="carbonValue != null">carbon_value = #{carbonValue},</if>
+            <if test="threshold != null">threshold = #{threshold},</if>
+            <if test="warningType != null and warningType != ''">warning_type = #{warningType},</if>
+            <if test="handleStatus != null">handle_status = #{handleStatus},</if>
+            <if test="handleTime != null">handle_time = #{handleTime},</if>
+            <if test="handleRemark != null and handleRemark != ''">handle_remark = #{handleRemark},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

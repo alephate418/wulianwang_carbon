@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ynu.edu.mapper.CarbonMapper">
+    <!-- 根据区域ID和时间范围查询碳数据列表 -->
+    <select id="selectByAreaAndTime" resultType="ynu.edu.entity.CarbonData">
+        SELECT cd.*, ca.area_name, ca.area_type
+        FROM carbon_data cd
+        JOIN campus_area ca ON cd.area_id = ca.id
+        WHERE cd.collect_time BETWEEN #{startTime} AND #{endTime}
+        <if test="areaId != null">
+            AND cd.area_id = #{areaId}
+        </if>
+    </select>
+
+    <!-- 插入主表数据 -->
+<!--    <insert id="insertData" parameterType="ynu.edu.entity.CarbonData">-->
+<!--        INSERT INTO carbon_data (-->
+<!--            area_id, total_carbon, sequestration,-->
+<!--            net_carbon, collect_time, create_time-->
+<!--        ) VALUES (-->
+<!--                     #{areaId}, #{totalCarbon}, #{sequestration},-->
+<!--                     #{netCarbon}, #{collectTime}, #{createTime}-->
+<!--                 )-->
+<!--    </insert>-->
+
+</mapper>

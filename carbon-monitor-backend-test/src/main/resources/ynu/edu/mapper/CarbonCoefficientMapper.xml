@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ynu.edu.mapper.CarbonCoefficientMapper">
+    <update id="updateById" parameterType="ynu.edu.entity.CarbonCoefficient">
+        UPDATE carbon_coefficient
+        <set>
+            <if test="coefficientType != null and coefficientType != ''">coefficient_type = #{coefficientType},</if>
+            <if test="coefficientValue != null">coefficient_value = #{coefficientValue},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <insert id="insert" parameterType="ynu.edu.entity.CarbonCoefficient">
+        INSERT INTO carbon_coefficient (
+            coefficient_type, coefficient_value,
+            remark, create_time, update_time
+        ) VALUES (
+                     #{coefficientType}, #{coefficientValue},
+                     #{remark}, #{createTime}, #{updateTime}
+                 )
+    </insert>
+</mapper>

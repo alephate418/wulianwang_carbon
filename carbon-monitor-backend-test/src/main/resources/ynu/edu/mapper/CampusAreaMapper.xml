@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ynu.edu.mapper.CampusAreaMapper">
+<!--    <select id="selectById" resultType="ynu.edu.entity.CampusArea">-->
+<!--        SELECT * FROM campus_area WHERE id = #{id}-->
+<!--    </select>-->
+
+    <update id="updateById" parameterType="ynu.edu.entity.CampusArea">
+        UPDATE campus_area
+        <set>
+            <if test="areaName != null and areaName != ''">area_name = #{areaName},</if>
+            <if test="areaType != null and areaType != ''">area_type = #{areaType},</if>
+            <if test="areaSize != null ">area_size = #{areaSize},</if>
+            <if test="location != null and location != ''">location = #{location},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>
